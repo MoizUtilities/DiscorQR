@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DiscoQR</title>
+  <meta name="description" content="This Tool Makes Custom QR codes for your discord server. Now it's time to share your discord server with gradient and custom logo QR codes." />
+  <meta name="keywords" content="QR code generator, Discord QR code, Discord server QR, custom QR codes, QR generator with logo, generate QR for Discord, gradient QR code, custom discord QR" />
+  <meta name="author" content="MoizXD">
+  <meta property="og:title" content="DiscoQR - Create Custom QR Codes For Your Discord Server" />
+  <meta property="og:description" content="This Tool Makes Custom QR codes for your discord server. Now it's time to share your discord server with gradient and custom logo QR codes." />
+  <meta property="og:image" content="https://example.com/path-to-your-thumbnail-image.jpg" />
+  <meta property="og:url" content="https://your-website-url.com" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="DiscoQR - Create Custom QR Codes For Your Discord Server" />
+  <meta name="twitter:description" content="This Tool Makes Custom QR codes for your discord server. Now it's time to share your discord server with gradient and custom logo QR codes." />
+  <meta name="twitter:image" content="https://example.com/path-to-your-thumbnail-image.jpg" />
+
+  <!-- Favicon -->
+  <link rel="icon" href="DiscoQR icon.png" type="image/x-icon">
+  <style>
+    :root {
+      --bg-color: #2c2f33;
+      --container-color: #23272a;
+      --text-color: white;
+    }
+
+    body.light {
+      --bg-color: #f4f4f4;
+      --container-color: #ffffff;
+      --text-color: #111111;
+    }
+.upload-label {
+  position: relative;
+  width: 100%;
+  margin: 10px 0 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.upload-label input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.custom-upload {
+  background: linear-gradient(to right, #7289da, #99aab5);
+  padding: 10px 18px;
+  border-radius: 12px;
+  margin-top: 8px;
+  cursor: pointer;
+  color: white;
+  font-weight: bold;
+  display: inline-block;
+  transition: transform 0.2s;
+}
+
+.custom-upload:hover {
+  transform: scale(1.05);
+}
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    h1 {
+      background: linear-gradient(45deg, #7289da, #99aab5);
+      -webkit-background-clip: text;
+      color: transparent;
+      font-size: 2.5rem;
+      margin: 20px 0;
+    }
+
+    .container {
+      background-color: var(--container-color);
+      padding: 30px;
+      border-radius: 20px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background-color 0.3s ease;
+    }
+
+    input[type="text"],
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      font-size: 1rem;
+      outline: none;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    input[type="color"] {
+      margin: 5px 10px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(to right, #7289da, #99aab5);
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: transform 0.2s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    #qr-code {
+      margin-top: 20px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.5s ease;
+    }
+
+    #qr-code.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    canvas {
+      border-radius: 20px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.6);
+    }
+
+    #error {
+      color: #ff5555;
+      margin-top: 10px;
+      display: none;
+    }
+
+    .color-selectors {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 10px;
+    }
+
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: 2px solid white;
+      border-radius: 30px;
+      padding: 8px 14px;
+      color: white;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    body.light .theme-toggle {
+      color: #222;
+      border-color: #222;
+    }
+
+    @media screen and (max-width: 600px) {
+      h1 {
+        font-size: 2rem;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+    .theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: 2px solid white;
+  border-radius: 30px;
+  padding: 8px 14px;
+  color: white;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.3s;
+  z-index: 10;
+}
+
+body.light .theme-toggle {
+  color: #222;
+  border-color: #222;
+}
+
+@media screen and (max-width: 600px) {
+  .theme-toggle {
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+}
+
+  </style>
+</head>
+<body>
+  <button class="theme-toggle" onclick="toggleTheme()">🌗 Theme</button>
+  <h1>DiscoQR</h1>
+  <div class="container">
+    <input type="text" id="linkInput" placeholder="Paste your Discord server link..." />
+    <div class="color-selectors">
+      <label>🎨 Color 1: <input type="color" id="color1" value="#7289da"></label>
+      <label>🎨 Color 2: <input type="color" id="color2" value="#99aab5"></label>
+    </div>
+    <label class="upload-label">
+  🖼️ Upload Logo (optional):
+  <input type="file" id="logoUpload" accept="image/*">
+  <span class="custom-upload">Choose Image</span>
+</label>
+    <button onclick="generateQR()">Generate QR</button>
+    <p id="error">❌ Invalid link. Only Discord links are allowed.</p>
+    <div id="qr-code"></div>
+    <button id="downloadBtn" style="display: none;" onclick="downloadQR()">Download QR</button>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/qr-code-styling/lib/qr-code-styling.js"></script>
+  <script>
+    let currentLogo = "https://cdn-icons-png.flaticon.com/512/2111/2111370.png"; // Default Discord logo
+
+    const qrCode = new QRCodeStyling({
+      width: 300,
+      height: 300,
+      type: "canvas",
+      data: "",
+      image: currentLogo,
+      dotsOptions: {
+        type: "rounded",
+        color: "#7289da"
+      },
+      backgroundOptions: {
+        color: "#ffffff"
+      },
+      imageOptions: {
+        crossOrigin: "anonymous",
+        margin: 10
+      }
+    });
+
+    function isValidDiscordLink(url) {
+      return (
+        url.startsWith("https://discord.com/") ||
+        url.startsWith("https://discord.gg/") ||
+        url.startsWith("https://dsc.gg/")
+      );
+    }
+
+    function generateQR() {
+      const link = document.getElementById("linkInput").value.trim();
+      const color1 = document.getElementById("color1").value;
+      const color2 = document.getElementById("color2").value;
+      const logoFile = document.getElementById("logoUpload").files[0];
+      const errorEl = document.getElementById("error");
+      const qrContainer = document.getElementById("qr-code");
+      const downloadBtn = document.getElementById("downloadBtn");
+
+      qrContainer.innerHTML = "";
+      qrContainer.classList.remove("show");
+      downloadBtn.style.display = "none";
+
+      if (!isValidDiscordLink(link)) {
+        errorEl.style.display = "block";
+        return;
+      }
+
+      errorEl.style.display = "none";
+
+      if (logoFile) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          updateQR(link, color1, color2, e.target.result);
+        };
+        reader.readAsDataURL(logoFile);
+      } else {
+        updateQR(link, color1, color2, currentLogo);
+      }
+
+      setTimeout(() => qrContainer.classList.add("show"), 100);
+    }
+
+    function updateQR(link, color1, color2, logo) {
+      qrCode.update({
+        data: link,
+        image: logo,
+        dotsOptions: {
+          type: "rounded",
+          gradient: {
+            type: "linear",
+            rotation: 0,
+            colorStops: color1 === color2
+              ? [{ offset: 0, color: color1 }]
+              : [
+                  { offset: 0, color: color1 },
+                  { offset: 1, color: color2 }
+                ]
+          }
+        }
+      });
+
+      const qrContainer = document.getElementById("qr-code");
+      qrContainer.innerHTML = "";
+      qrCode.append(qrContainer);
+      document.getElementById("downloadBtn").style.display = "inline-block";
+    }
+
+    function downloadQR() {
+      qrCode.download({ name: "discord-qr", extension: "png" });
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+  </script>
+</body>
+</html>
